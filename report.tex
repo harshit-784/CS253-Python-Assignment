@@ -1,0 +1,104 @@
+\documentclass{article}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+
+\title{Python Assignment Report}
+\author{Harshit Srivastava}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\section{Methodology}
+\subsection{Data Preprocessing}
+The following preprocessing steps were performed on the data:
+\begin{itemize}
+    \item Columns of \texttt{Total Assets} and \texttt{Liabilities} were converted to numeric format.
+    \item Columns of \texttt{ID}, \texttt{Candidate Name}, \texttt{Constituency} were dropped as they were mostly unique to each candidate.
+    \item Categorical columns like \texttt{Party} were converted to numeric using ordinal encoding. This was preferred over one-hot encoding because the number of unique values in each column was large, and one-hot encoding would have resulted in a large number of columns. The class to be predicted - \texttt{Education} - was also encoded using ordinal encoding.
+    \item Training set was split into a training and validation set using a 85-15 split.
+    \end{itemize}
+
+\section{Experiment Details}
+The following models were trained on the data:
+\begin{itemize}
+    \item Logistic Regression
+    \item Decision Tree
+    \item Random Forest
+    \item K-Nearest Neighbors
+\end{itemize}
+Individually, the models did not perform well. Logistic regression predicted only one class. Decision Tree and Random Forest performed very well on the training set but did poorly on the validation set, which suggests that they were overfitting the training data. K-Nearest Neighbors performed better, which was still not satisfactory.
+
+A new approach was tested where all the models were combined into an ensemble model. The ensemble model was created by taking the majority vote of the predictions of all the models. This ensemble model performed better than the individual models. Finally, this model was used to predict the class of the test data.
+
+\subsection{Data Insights}
+The following insights were obtained from the data:
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/cm_train.png}
+    \includegraphics[width=0.45\textwidth]{images/cm_validation.png}
+    \caption{Confusion matrices of the training and validation sets for Random forest classifier(left and right respectively)}
+\end{figure}
+We can see here that the training set has a high accuracy, but the validation set has a low accuracy. This suggests that the model is overfitting the training data.
+
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{images/correlation_matrix.png}\\
+    Figure 3: Correlation matrix of the data
+\end{center}
+
+The correlation matrix shows that there is no correlation between the \texttt{Education} column and the other columns. This suggests that the models are not able to learn the relationship between the features and the target variable. This is the reason why the models are not able to predict the class of the test data.
+
+\addtocounter{figure}{1}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/crime.png}
+    \caption{Percentage of distribution of parties with candidates having the most criminal records}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/wealth.png}
+    \caption{Percentage of distribution of parties with candidates having the most wealth}
+\end{figure}
+\pagebreak
+\section{Results}
+Final F1 score on the test data is as follows:
+\begin{itemize}
+    \item Public Score: 0.22542, Rank 158
+    \item Private Score: 0.21073, Rank 93
+\end{itemize}
+Note that these ranks include the many deleted submissions.
+
+\section{Final Submission}
+All the codes are present in the following GitHub repository.\\ \url{https://github.com/harshit-784/CS253-Python-Assignment}\\
+
+The documentation for libraries used here can be found at the following links:
+\begin{itemize}
+    \item Matplotlib: \url{https://matplotlib.org/stable/contents.html}
+    \item Pandas: \url{https://pandas.pydata.org/docs/}
+    \item Numpy: \url{https://numpy.org/doc/stable/}
+    \item Scikit-learn: \url{https://scikit-learn.org/stable/user_guide.html}
+    \item Seaborn: \url{https://seaborn.pydata.org/tutorial.html}
+\end{itemize}\\
+
+I referred to this blog for the data preprocessing techniques: 
+\url{https://www.geeksforgeeks.org/data-preprocessing-machine-learning-python/}\\
+
+This blog helped me understand the different ML models for classification models:
+\url{https://www.datacamp.com/blog/classification-machine-learning}
+% \nocite{python_libraries}
+
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+
+\end{document}
